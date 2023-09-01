@@ -11,7 +11,10 @@
 	import { h } from 'hastscript';
 	import { onMount } from 'svelte';
 
-	import Callout from './Callout.svelte';
+	import { directive_splitter } from './directive_splitter';
+
+	import Directive from './Directive.svelte';
+
 	// customElements.define('docbase-callout', Callout.element);
 
 	// let directive_count = 0;
@@ -61,27 +64,31 @@
 				) {
 					// directive_list.push(h(node.name, node.attributes, node.children));
 					const data = {
-						hName: 'docbase-' + node.name,
-						hProperties: node.attributes
-						// hProperties: { ...node.attributes, directive_idx: directive_count }
+						hName: 'directive',
+						// hProperties: node.attributes
+						hProperties: {
+							...node.attributes,
+							// directive_idx: directive_count,
+							directive_name: node.name
+						}
 					};
 					node.data = Object.assign({}, node.data, data);
 					// directive_count++;
 
-					switch (node.type) {
-						case 'textDirective':
-							// node.type = 'textDirective';
-							break;
-						case 'leafDirective':
-							// node.type = 'leafDirective';
-							break;
-						case 'containerDirective':
-							// node.type = 'containerDirective';
-							split_args(node); // modifies node.children in place
-							break;
-						default:
-							return;
-					}
+					// switch (node.type) {
+					// 	case 'textDirective':
+					// 		// node.type = 'textDirective';
+					// 		break;
+					// 	case 'leafDirective':
+					// 		// node.type = 'leafDirective';
+					// 		break;
+					// 	case 'containerDirective':
+					// 		// node.type = 'containerDirective';
+					// 		split_args(node); // modifies node.children in place
+					// 		break;
+					// 	default:
+					// 		return;
+					// }
 				}
 			});
 		};
@@ -95,7 +102,9 @@ A normal paragraph.
 
 :::callout{#callout_id type=warning collapsed=true }
 Callout title
+
 ---
+
 Callout content
 :::
 
@@ -115,8 +124,19 @@ more paragraph
 
 	const html = processor.processSync(markdown).toString();
 	// console.log(ast);
-	// console.log(html);
+	console.log(html);
 
+	const parts = directive_splitter(html);
+
+	console.log(parts);
 </script>
 
-{@html html} 
+<!-- {@html html} -->
+
+{#each parts as part}
+	{#if part.is_directive}
+		<Directive directive_name={part.attributes.directive_name} directive_props={part.attributes} directive_content={part.content} />
+	{:else}
+		{@html part.content}
+	{/if}
+{/each}

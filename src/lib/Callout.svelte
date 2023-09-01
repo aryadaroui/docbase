@@ -1,11 +1,15 @@
-<svelte:options customElement="docbase-callout" />
+<!-- <svelte:options customElement="docbase-callout" /> -->
 
 <script lang="ts">
+	import Test from './Test.svelte';
 
-	import Test from "./Test.svelte";
-
+	export let id: string;
+	// export let callout_idx: number;
 	export let type: string = 'info';
 	export let collapsed: boolean = false;
+	export let directive_content: string;
+
+	console.log(directive_content);
 
 	function toggle_collapsed() {
 		collapsed = !collapsed;
@@ -13,27 +17,20 @@
 	}
 </script>
 
-<div class="callout">
-
-	<Test test_val="test" />
-
-	<button on:click={toggle_collapsed}>click</button>
-	<div class="callout-title">
-		<div>{type}!</div>
-		<div><slot name="arg0" /></div>
+<callout {id}>
+	<div class="title">
+		{type}
+		<button on:click={toggle_collapsed}>toggle</button>
 	</div>
-
-	<hr />
-	<slot name="arg1" />
-</div>
+</callout>
 
 <style lang="scss">
-	.callout {
+	callout {
 		border: 1px solid red;
 		padding: 1rem;
 	}
 
-	div.callout-title {
+	div.title {
 		font-weight: bold;
 		font-size: large;
 

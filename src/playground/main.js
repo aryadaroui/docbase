@@ -1,5 +1,5 @@
 import { remark } from "remark";
-import remarkDirective from "remark-directive";	
+import remarkDirective from "remark-directive";
 import remarkRehype from "remark-rehype";
 import remarkParse from "remark-parse";
 import rehypeStringify from "rehype-stringify";
@@ -54,16 +54,23 @@ function split_html_string(html) {
 			const dom = new JSDOM(str);
 			const directive = dom.window.document.querySelector('directive');
 			let attributes = {};
-			
+
 			for (let i = 0; i < directive.attributes.length; i++) {
 				attributes[directive.attributes[i].name] = directive.attributes[i].value;
 			}
 
-			// console.log(attributes);
+			console.log(attributes);
 
-
+			return {
+				is_directive: true,
+				attributes: attributes,
+				content: directive.innerHTML
+			}
 		}
-		return str;
+		return {
+			is_directive: false,
+			content: str
+		}
 	})
 }
 
@@ -76,7 +83,7 @@ A normal paragraph.
 
 :::callout{#callout_id type=warning title="This is a warning!" collapsed=true }
 
-Callout content.
+Callout content. :text[text]!
 
 ---
 
@@ -99,3 +106,6 @@ const html = processor.processSync(markdown).toString();
 
 console.log(html);
 console.log(split_html_string(html));
+
+
+console.log("done");
