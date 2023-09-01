@@ -1,0 +1,12 @@
+{
+	"identifier": {
+		"author": "Author",
+		"title": "Title",
+		"link": "http://www.example.com"
+	},
+	"peter": {
+		"author": "Peter",
+		"title": "Peter's Page",
+		"link": "http://www.peter.com"
+	}
+}

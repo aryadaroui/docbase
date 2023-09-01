@@ -1,0 +1,13 @@
+title: Test Document
+# author: Test Author
+# organization: Test Organization
+# publish_time: '2023-07-28T20:11:07.750Z'
+# latest_edit: '2023-05-28T20:11:07.750Z'
+# edit_count: 3
+syntax: docbase_1_0_0
+
+label_settings:
+  callout:
+    enumerate: true
+    prefix: 'Callout #'
+  
