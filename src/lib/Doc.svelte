@@ -57,38 +57,24 @@
 	function convert_directive() {
 		return (tree) => {
 			visit(tree, (node) => {
-				if (
-					node.type === 'textDirective' ||
-					node.type === 'leafDirective' ||
-					node.type === 'containerDirective'
-				) {
-					// directive_list.push(h(node.name, node.attributes, node.children));
+				if (node.type === 'textDirective') {
 					const data = {
-						hName: 'directive',
-						// hProperties: node.attributes
+						hName: 'directive-inline',
 						hProperties: {
-							...node.attributes,
-							// directive_idx: directive_count,
-							directive_name: node.name
+							name: node.name,
+							...node.attributes
 						}
 					};
 					node.data = Object.assign({}, node.data, data);
-					// directive_count++;
-
-					// switch (node.type) {
-					// 	case 'textDirective':
-					// 		// node.type = 'textDirective';
-					// 		break;
-					// 	case 'leafDirective':
-					// 		// node.type = 'leafDirective';
-					// 		break;
-					// 	case 'containerDirective':
-					// 		// node.type = 'containerDirective';
-					// 		split_args(node); // modifies node.children in place
-					// 		break;
-					// 	default:
-					// 		return;
-					// }
+				} else if (node.type === 'leafDirective' || node.type === 'containerDirective') {
+					const data = {
+						hName: 'directive-block',
+						hProperties: {
+							name: node.name,
+							...node.attributes
+						}
+					};
+					node.data = Object.assign({}, node.data, data);
 				}
 			});
 		};
@@ -102,10 +88,8 @@ A normal paragraph.
 
 :::callout{#callout_id type=warning collapsed=true }
 Callout title
-
----
-
-Callout content
+***
+Callout content :text[text directive]{#text_id}.
 :::
 
 more paragraph
@@ -128,15 +112,19 @@ more paragraph
 
 	const parts = directive_splitter(html);
 
-	console.log(parts);
+	// console.log(parts);
 </script>
 
 <!-- {@html html} -->
 
-{#each parts as part}
+<!-- {#each parts as part}
 	{#if part.is_directive}
-		<Directive directive_name={part.attributes.directive_name} directive_props={part.attributes} directive_content={part.content} />
+		<Directive
+			directive_name={part.attributes.directive_name}
+			directive_props={part.attributes}
+			directive_content={part.content}
+		/>
 	{:else}
 		{@html part.content}
 	{/if}
-{/each}
+{/each} -->

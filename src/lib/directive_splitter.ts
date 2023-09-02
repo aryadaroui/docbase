@@ -3,6 +3,12 @@ import cheerio from "cheerio";
 
 
 export function directive_splitter(html: string) {
+
+
+	// only matches the first directive closing tag. should use cheerio here too
+
+	// console.log(html);
+
 	const regex = /(<directive.*?>.*?<\/directive>)/gs;
 	const html_list = html.split(regex).filter((str) => str.trim() !== '');
 

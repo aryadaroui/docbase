@@ -96,9 +96,13 @@ howdy_yall(0)
 
 with optional body for caption. Shows default transformation shown, but can be overridden
 
-:::callout {id} title="some warning" collapsed=true ->"Callout #"
+```
+:::callout {#id collapsed=true
+title
+---
 body
 :::
+```
 
 :::table {id} src="table.json" ->"Table #"
 
