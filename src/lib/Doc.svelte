@@ -55,36 +55,85 @@
 		node.children = [aboveNode, belowNode];
 	}
 
+	// function capture_type() {
+	// 	return (tree) => {
+	// 		visit(tree, (node) => {
+	// 			if (node.type === 'textDirective') {
+	// 				node.type = 'leafDirective';
+	// 			} else if (node.type === 'leafDirective') {
+	// 				node.type = 'containerDirective';
+	// 			}
+	// 		});
+	// 	};
+	// }
+
+	function log_node() {
+		return (tree) => {
+			visit(tree, (node) => {
+
+				if (node.type === 'text') {
+					node.value = node.value.replace(/:::([a-zA-Z]+):([a-zA-Z]+)/g, '$1-$2')
+				}
+
+				console.log(node);
+			});
+		};
+	}
+
 	function convert_directive() {
 		return (tree) => {
 			visit(tree, (node) => {
-				if (
-					node.type === 'textDirective' ||
-					node.type === 'leafDirective' ||
-					node.type === 'containerDirective'
-				) {
+				if (node.type === 'textDirective') {
 					const data = {
-						hName: node.name,
+						hName: 'directive-inline',
 						hProperties: {
+							name: node.name,
+							...node.attributes
+						}
+					};
+					node.data = Object.assign({}, node.data, data);
+				} else if (node.type === 'leafDirective' || node.type === 'containerDirective') {
+					const data = {
+						hName: 'directive-block',
+						hProperties: {
+							name: node.name,
 							...node.attributes
 						}
 					};
 					node.data = Object.assign({}, node.data, data);
 				}
+
+				// if (
+				// 	node.type === 'textDirective' ||
+				// 	node.type === 'leafDirective' ||
+				// 	node.type === 'containerDirective'
+				// ) {
+				// 	const data = {
+				// 		hName: node.name,
+				// 		hProperties: {
+				// 			...node.attributes
+				// 		}
+				// 	};
+				// 	node.data = Object.assign({}, node.data, data);
+				// }
 			});
 		};
 	}
 
-	const markdown = `
+	let markdown = `
 
 # Start Conversion test
 
 A normal paragraph with :footnote[footnote here].
 
-:::callout{#id}
+:::callout{#id .warning}
 callout header
 ***
-callout body
+callout **body**
+
+more stuff in the body
+
+wowo verey nice
 ***
 callout footer
 :::
@@ -94,6 +143,8 @@ more paragraph
 # End Conversion test
 
 `;
+
+	//  markdown = markdown.replace(/:::([a-zA-Z]+):([a-zA-Z]+)/g, '$1-$2');
 
 	const mast = remark().use(remarkGfm).use(remarkDirective).parse(markdown);
 

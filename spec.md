@@ -20,10 +20,57 @@ converts to a smart link with text for target ID type
 
 # block
 
+## Admonitions
+
+These are all types of admonitions. Callout is non-collapsible, collapsible is. They can have the following types / icons / colors:
+
+- blue
+  - info
+  - note
+  - abstract
+  - summary
+  - tldr
+  - tip
+- green
+  - success
+  - check
+  - checkmark
+  - done
+  - ok
+- yellow
+  - question
+  - help
+- orange
+  - warning
+  - caution
+  - attention
+- red
+  - danger
+  - error
+  - failure
+  - x
+  - bug
+- purple
+  - console
+  - brackets
+  - bug
+  - example
+- pink
+  - love
+  - heart
+
+
+
+
+
+```
+none info warning danger error bug fix
+```
+
 ## callout
 
 ```
-:::callout:warning{#id}
+:::callout{#id .type}
 header (title)
 ***
 body
@@ -43,7 +90,7 @@ footer (caption)
 
   more ideas: https://notes.nicolevanderhoeven.com/Obsidian+Callouts
 
-## dropdown
+## collapsible | collapsable
 
 ```
 :::dropdown:warning{#id}

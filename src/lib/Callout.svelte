@@ -1,68 +1,48 @@
 <!-- <svelte:options customElement="docbase-callout" /> -->
 
 <script lang="ts">
-	import Test from './Test.svelte';
-	// import { directive_splitter } from './directive_splitter';
-	import Directive from './Directive.svelte';
+	import Node from './Node.svelte';
 
 	export let id: string;
-	// export let callout_idx: number;
 	export let type: string = 'info';
-	export let collapsed: boolean = false;
-	export let directive_content: string;
+	export let children: any[];
 
-	function split_content(html_string: string) {
-		return html_string.split('<hr>');
-	}
 
-	const parts = split_content(directive_content);
-	const title = parts[0];
-	const content = parts[1];
+	// TODO: always assumes title is first child
+	// decompose title / body between <hr> tags
+	// default title to type if not provided
 
-	// const content_parts = directive_splitter(content);
+	let title = children[0].children[0].value;
 
-	console.log(directive_content);
+	let body = {
+		type: 'element',
+		tagName: 'div',
+		children: children.slice(2),
+		properties: {}
+	};
 
-	function toggle_collapsed() {
-		collapsed = !collapsed;
-		console.log(collapsed);
-	}
+	// console.log('children: ', children);
 </script>
 
-<div {id} class="callout">
-	<div class="title">
-		{type}
-		{@html title}
+<callout>
+	<div class="title">{type}: {title}</div>
+	<div class="body">
+		<Node node={body} />
 	</div>
-	<hr />
-	{#each content_parts as part}
-		{#if part.is_directive}
-			<Directive
-				directive_name={part.attributes.directive_name}
-				directive_props={part.attributes}
-				directive_content={part.content}
-			/>
-		{:else}
-			{@html part.content}
-		{/if}
-	{/each}
-</div>
+	<enumeration>
+		Callout 1
+	</enumeration>
+</callout>
 
 <style lang="scss">
-	.callout {
-		border: 1px solid red;
-		padding: 1rem;
+	callout {
+		display: block;
+		border: 1px solid black;
+		padding: 1em;
 	}
 
 	.title {
 		font-weight: bold;
 		font-size: large;
-
-		display: flex;
-		flex-direction: row;
-	}
-
-	::slotted(p) {
-		margin: 0;
 	}
 </style>

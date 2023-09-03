@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { space } from 'svelte/internal';
+	import Directive from './Directive.svelte';
 
 	export let node: Node;
 
@@ -63,15 +63,15 @@
 <!-- {@html node_html.closing_tag} -->
 
 {#if node.type === 'element'}
-	<svelte:element this={node.tagName} {...node.properties}>
-	<!-- {@html `<${node.tagName}>`} -->
-
-	{#each node.children as childNode}
-		<svelte:self node={childNode} />
-	{/each}
-	<!-- {@html `</${node.tagName}>`} -->
-
-	</svelte:element>
+	{#if node.tagName.startsWith('directive-')}
+		<Directive props={node.properties} children={node.children} />
+	{:else}
+		<svelte:element this={node.tagName} {...node.properties}>
+			{#each node.children as childNode}
+				<svelte:self node={childNode} />
+			{/each}
+		</svelte:element>
+	{/if}
 {:else if node.type === 'text'}
 	{@html node.value}
 {/if}

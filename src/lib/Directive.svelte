@@ -1,25 +1,31 @@
 <script lang="ts">
 	import Callout from './Callout.svelte';
 	import Text from './Text.svelte';
+	import Footnote from './Footnote.svelte';
 
-	export let directive_name: string;
-	export let directive_props: { [key: string]: string };
-	export let directive_content: string | null;
+	export let props: { [key: string]: string };
+	export let children: any[];
 
-	directive_props['directive_content'] = directive_content;
+	// let nesting_level = 0;
+	let { name, class: type, ...rest } = props;
+
+	let prop_pass = {
+		...rest,
+		children
+	};
 
 	let component_map = {
 		callout: Callout,
-		text: Text
+		text: Text,
+		footnote: Footnote
 	};
 
-	console.log(directive_name);
-	console.log(directive_props);
+	// console.log(props);
 </script>
 
 <!-- <div> -->
 <!-- <p>directive!</p> -->
 
-<svelte:component this={component_map[directive_name]} {...directive_props} />
+<svelte:component this={component_map[props.name]} {...prop_pass} />
 
 <!-- </div> -->
