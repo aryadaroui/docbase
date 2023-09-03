@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import Test from './Test.svelte';
-	import { directive_splitter } from './directive_splitter';
+	// import { directive_splitter } from './directive_splitter';
 	import Directive from './Directive.svelte';
 
 	export let id: string;
@@ -19,7 +19,7 @@
 	const title = parts[0];
 	const content = parts[1];
 
-	const content_parts = directive_splitter(content);
+	// const content_parts = directive_splitter(content);
 
 	console.log(directive_content);
 

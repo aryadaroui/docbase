@@ -11,9 +11,10 @@
 	import { h } from 'hastscript';
 	import { onMount } from 'svelte';
 
-	import { directive_splitter } from './directive_splitter';
+	// import { directive_splitter } from './directive_splitter';
 
 	import Directive from './Directive.svelte';
+	import Node from './Node.svelte';
 
 	// customElements.define('docbase-callout', Callout.element);
 
@@ -82,21 +83,17 @@
 
 	const markdown = `
 
-# Conversion test
+# Start Conversion test
 
 A normal paragraph.
 
-:::callout{#callout_id type=warning collapsed=true }
-Callout title
-***
-Callout content :text[text directive]{#text_id}.
-:::
-
 more paragraph
+
+# End Conversion test
 
 `;
 
-	const ast = remark().use(remarkGfm).use(remarkDirective).parse(markdown);
+	const mast = remark().use(remarkGfm).use(remarkDirective).parse(markdown);
 
 	const processor = unified()
 		.use(remarkParse)
@@ -106,14 +103,29 @@ more paragraph
 		.use(remarkRehype)
 		.use(rehypeStringify);
 
-	const html = processor.processSync(markdown).toString();
-	// console.log(ast);
-	console.log(html);
+	const hast = processor.runSync(processor.parse(markdown));
 
-	const parts = directive_splitter(html);
+	const html = processor.processSync(markdown).toString();
+	console.log('mast: ', mast);
+	console.log('hast: ', hast);
+	// console.log('hast: ', JSON.stringify(hast, null, 3));
+	// console.log(html);
+
+	// const parts = directive_splitter(html);
 
 	// console.log(parts);
 </script>
+
+{#each hast.children as child}
+	{#if child.type === 'text'}
+		<!-- {child.value} -->
+	{:else}
+		{console.log(child)}
+		<Node node={child} />
+	{/if}
+{/each}
+
+<!-- Need to wrap the beginning and end of HTML pair around the recursive tag creation! -->
 
 <!-- {@html html} -->
 

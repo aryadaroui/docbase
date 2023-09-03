@@ -1,6 +1,24 @@
+# inline
+
+## footnote
+
+footnote should be an element that is displayed on hover
+
+```
+:foonote[footnote content]
+```
+
+## ref
+
+converts to a smart link with text for target ID type
+
+```
+:ref[#target_id]
+```
 
 
 
+# block
 
 ## callout
 
@@ -35,13 +53,5 @@ body
 ***
 footer (caption)
 :::
-```
-
-## footnote
-
-footnote should be a hovering element
-
-```
-:foonote[]
 ```
 
