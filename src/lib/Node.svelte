@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { space } from 'svelte/internal';
+
 	export let node: Node;
 
 	// console.log('node: ', node);
@@ -36,20 +38,40 @@
 		};
 	}
 
+	let attributes = {
+		id: 'myId',
+		class: 'myClass',
+		disabled: true
+	};
+
 	// debugger;
 </script>
 
 <!-- {@html node_html.opening_tag} -->
 <!-- {@html `<${node.tagName}${Object.keys(node.properties).map((key) => ` ${key}="${node.properties[key]}"`)}>`} -->
-{@html `<${node.tagName}>`}
-{#each node.children as child}
-	{#if child.type === 'text'}
-		{@html child.value}
-	{:else if child.type === 'element'}
-		<svelte:self node={child} />
-	{:else}
-		<!-- {console.log(child)} -->
-	{/if}
-{/each}
-{@html `</${node.tagName}>`}
+<!-- {@html `<${node.tagName}>`} -->
+<!-- {#each node.children as child} -->
+<!-- {#if child.type === 'text'} -->
+<!-- {@html child.value} -->
+<!-- {:else if child.type === 'element'} -->
+<!-- <svelte:self node={child} /> -->
+<!-- {:else} -->
+<!-- {console.log(child)} -->
+<!-- {/if} -->
+<!-- {/each} -->
+<!-- {@html `</${node.tagName}>`} -->
 <!-- {@html node_html.closing_tag} -->
+
+{#if node.type === 'element'}
+	<svelte:element this={node.tagName} {...node.properties}>
+	<!-- {@html `<${node.tagName}>`} -->
+
+	{#each node.children as childNode}
+		<svelte:self node={childNode} />
+	{/each}
+	<!-- {@html `</${node.tagName}>`} -->
+
+	</svelte:element>
+{:else if node.type === 'text'}
+	{@html node.value}
+{/if}

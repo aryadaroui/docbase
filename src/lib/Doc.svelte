@@ -58,20 +58,14 @@
 	function convert_directive() {
 		return (tree) => {
 			visit(tree, (node) => {
-				if (node.type === 'textDirective') {
+				if (
+					node.type === 'textDirective' ||
+					node.type === 'leafDirective' ||
+					node.type === 'containerDirective'
+				) {
 					const data = {
-						hName: 'directive-inline',
+						hName: node.name,
 						hProperties: {
-							name: node.name,
-							...node.attributes
-						}
-					};
-					node.data = Object.assign({}, node.data, data);
-				} else if (node.type === 'leafDirective' || node.type === 'containerDirective') {
-					const data = {
-						hName: 'directive-block',
-						hProperties: {
-							name: node.name,
 							...node.attributes
 						}
 					};
@@ -85,7 +79,15 @@
 
 # Start Conversion test
 
-A normal paragraph.
+A normal paragraph with :footnote[footnote here].
+
+:::callout{#id}
+callout header
+***
+callout body
+***
+callout footer
+:::
 
 more paragraph
 
@@ -117,26 +119,8 @@ more paragraph
 </script>
 
 {#each hast.children as child}
-	{#if child.type === 'text'}
-		<!-- {child.value} -->
-	{:else}
-		{console.log(child)}
+	{#if child.type === 'element'}
+		<!-- No raw text in root -->
 		<Node node={child} />
 	{/if}
 {/each}
-
-<!-- Need to wrap the beginning and end of HTML pair around the recursive tag creation! -->
-
-<!-- {@html html} -->
-
-<!-- {#each parts as part}
-	{#if part.is_directive}
-		<Directive
-			directive_name={part.attributes.directive_name}
-			directive_props={part.attributes}
-			directive_content={part.content}
-		/>
-	{:else}
-		{@html part.content}
-	{/if}
-{/each} -->
