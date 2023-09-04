@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Directive from './Directive.svelte';
+	import Math from './Math.svelte';
 
 	export let node: Node;
 
@@ -65,6 +66,8 @@
 {#if node.type === 'element'}
 	{#if node.tagName.startsWith('directive-')}
 		<Directive props={node.properties} children={node.children} />
+	{:else if node.properties && Array.isArray(node.properties.className) && node.properties.className.includes('math')}
+		<Math {node} />
 	{:else}
 		<svelte:element this={node.tagName} {...node.properties}>
 			{#each node.children as childNode}

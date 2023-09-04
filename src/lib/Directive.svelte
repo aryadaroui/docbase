@@ -11,6 +11,7 @@
 
 	let prop_pass = {
 		...rest,
+		type,
 		children
 	};
 

@@ -4,6 +4,8 @@
 	import remarkGfm from 'remark-gfm';
 	import remarkRehype from 'remark-rehype';
 	import remarkParse from 'remark-parse';
+	import remarkMath from 'remark-math';
+	import rehypeKatex from 'rehype-katex';
 	import rehypeStringify from 'rehype-stringify';
 	import { unified } from 'unified';
 
@@ -70,9 +72,8 @@
 	function log_node() {
 		return (tree) => {
 			visit(tree, (node) => {
-
 				if (node.type === 'text') {
-					node.value = node.value.replace(/:::([a-zA-Z]+):([a-zA-Z]+)/g, '$1-$2')
+					node.value = node.value.replace(/:::([a-zA-Z]+):([a-zA-Z]+)/g, '$1-$2');
 				}
 
 				console.log(node);
@@ -124,16 +125,18 @@
 
 # Start Conversion test
 
-A normal paragraph with :footnote[footnote here].
+A normal paragraph with :footnote[footnote here]. and math $x^2$.
+
+$$
+f(x) = x^2
+$$
 
 :::callout{#id .warning}
-callout header
+callout title
 ***
 callout **body**
 
 more stuff in the body
-
-wowo verey nice
 ***
 callout footer
 :::
@@ -151,9 +154,11 @@ more paragraph
 	const processor = unified()
 		.use(remarkParse)
 		.use(remarkGfm)
+		.use(remarkMath)
 		.use(remarkDirective)
 		.use(convert_directive)
 		.use(remarkRehype)
+		.use(rehypeKatex)
 		.use(rehypeStringify);
 
 	const hast = processor.runSync(processor.parse(markdown));
@@ -168,6 +173,19 @@ more paragraph
 
 	// console.log(parts);
 </script>
+
+<svelte:head>
+	<link
+		rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"
+		integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"
+		crossorigin="anonymous"
+	/>
+</svelte:head>
+
+
+<!-- {@html html} -->
+
 
 {#each hast.children as child}
 	{#if child.type === 'element'}
