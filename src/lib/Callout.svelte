@@ -33,9 +33,9 @@
 		}
 	}
 
-	console.log('groups: ', groups);
-	console.log('title: ', title);
-	console.log('body: ', body);
+	// console.log('groups: ', groups);
+	// console.log('title: ', title);
+	// console.log('body: ', body);
 
 	// debugger
 

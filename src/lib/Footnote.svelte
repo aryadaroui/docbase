@@ -4,7 +4,7 @@
 	export let id: string;
 	export let children: any[];
 
-	console.log('children: ', children);
+	// console.log('children: ', children);
 
 	// console.log('children: ', children);
 </script>
