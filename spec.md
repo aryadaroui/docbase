@@ -1,14 +1,14 @@
-# inline
+# Inline
 
-## footnote
+## Footnotes
 
 footnote should be an element that is displayed on hover
 
 ```
-:foonote[footnote content]
+:foonote[footnote text]{#id}
 ```
 
-## ref
+## References
 
 converts to a smart link with text for target ID type
 
@@ -16,89 +16,254 @@ converts to a smart link with text for target ID type
 :ref[#target_id]
 ```
 
+## Highlight
 
+`:highlight[hilighted text]{#id}`
 
-# block
+# Block
 
-## Admonitions
+## Callouts
 
-These are all types of admonitions. Callout is non-collapsible, collapsible is. They can have the following types / icons / colors:
-
-- blue
-  - info
-  - note
-  - abstract
-  - summary
-  - tldr
-  - tip
-- green
-  - success
-  - check
-  - checkmark
-  - done
-  - ok
-- yellow
-  - question
-  - help
-- orange
-  - warning
-  - caution
-  - attention
-- red
-  - danger
-  - error
-  - failure
-  - x
-  - bug
-- purple
-  - console
-  - brackets
-  - bug
-  - example
-- pink
-  - love
-  - heart
-
-
-
-
+Can have the following types / icons / colors:
 
 ```
-none info warning danger error bug fix
+purple:, console, brackets, bug, example
+blue: info, note, abstract, summary, tldr, tip
+green: success, check, done, solution
+yellow: question, help, frown
+orange: warning, caution, attention
+red: danger, error, failure, x, bug, fire
+pink: love, heart, smile
 ```
 
-## callout
+### normal callout
 
 ```
 :::callout{#id .type}
-header (title)
+title
 ***
 body
-***
-footer (caption)
 :::
 ```
 
-- options:
-
-  - info
-  - warning
-  - summary / tldr / abstract
-  - todo
-  - tip / hint
-  - ...
-
-  more ideas: https://notes.nicolevanderhoeven.com/Obsidian+Callouts
-
-## collapsible | collapsable
+### dropdown
 
 ```
-:::dropdown:warning{#id}
-header (title)
+:::callout-dropdown{#id. .type}
+title
+***
+body
+:::
+```
+
+## Figures
+
+### Normal figure
+
+```
+:::figure{#id src="image.webp"}
+caption
+:::
+```
+
+### Slideshow
+
+```
+:::figure-slideshow{#id src="image1.webp image2.webp"}
+caption
+:::
+```
+
+### Slider
+
+```
+:::figure-slider{#id src="image1.webp image2.webp"}
+caption
+:::
+```
+
+## Diagrams
+
+Specifically for vector diagrams. Has different counter than Figure.
+
+```
+:::diagram{#id src="diagam.svg"}
+caption
+:::
+```
+
+## Tables
+
+```
+:::table{#id src="table.md"}
+caption
+:::
+```
+
+Or, can be inserted manually
+
+```
+:::table{#id}
+body
+***
+caption
+:::
+```
+
+## Plots
+
+```
+:::plot-plotly{#id src="data.json"}
+caption
+:::
+```
+
+## Equations
+
+```
+::equation{#id src="eqn.tex"}
+```
+
+```
+:::equation{#id src="eqn.tex"}
+caption
+:::
+```
+
+```
+:::equation{#id}
+$$
+f(x)
+$$
+:::
+```
+
+## Academic
+
+```
+:::theorem{#id}
+body
+:::
+```
+
+```
+:::lemma{#id}
+body
+:::
+```
+
+```
+:::corollary{#id}
+body
+:::
+```
+
+```
+:::proposition{#id}
+body
+:::
+```
+
+```
+:::axiom{#id}
+body
+:::
+```
+
+```
+:::definition{#id}
+body
+:::
+```
+
+```
+:::example{#id}
+body
+:::
+```
+
+```
+:::algorithm{#id}
+body
+:::
+```
+
+```
+:::Exercisde{#id}
+body
+:::
+```
+
+Pair an exercise block with an internal `callout-dropdown` to hide the solution.
+
+## Audio
+
+```
+:::audio{#id src="song.m4a"}
+caption
+:::
+```
+
+```
+:::audio-playlist{#id src="song1.m4a song2.m4a"}
+caption
+:::
+```
+
+## Video
+
+Video source must be an external hyperlink!
+
+```
+:::audio{#id src="song.m4a"}
+caption
+:::
+```
+
+## Tabs
+
+```
+:::tab{#id}
+Content 1
+***
+Content 2
+:::
+```
+
+## Blocks
+
+You can have a generic expandable block
+
+```
+:::block{#id}
+title
 ***
 body
 ***
-footer (caption)
+caption
 :::
+```
+
+Within it, you can have horizontal sub-blocks
+
+```
+::::block{#id}
+  title
+  ***
+  :::subblock
+  	Content 1
+  :::
+  :::subblock
+	  Content 2
+  :::
+  ***
+  caption
+::::
+```
+
+## References
+
+```
+::references{#id src="references.json"}
 ```
 

@@ -13,10 +13,12 @@
 	import { h } from 'hastscript';
 	import { onMount } from 'svelte';
 
-	// import { directive_splitter } from './directive_splitter';
 
 	import Directive from './Directive.svelte';
 	import Node from './Node.svelte';
+
+
+	export let markdown;
 
 	// customElements.define('docbase-callout', Callout.element);
 
@@ -121,34 +123,7 @@
 		};
 	}
 
-	let markdown = `
 
-# Start Conversion test
-
-A normal paragraph with :footnote[footnote here]. inline code \`x^2\`.
-
-code block
-
-\`\`\`js
-f(x) = x^2
-\`\`\`
-
-
-:::callout{#id .warning}
-callout title
-***
-callout **body**
-
-more stuff in the body
-***
-callout footer
-:::
-
-more paragraph
-
-# End Conversion test
-
-`;
 
 	//  markdown = markdown.replace(/:::([a-zA-Z]+):([a-zA-Z]+)/g, '$1-$2');
 
@@ -177,14 +152,6 @@ more paragraph
 	// console.log(parts);
 </script>
 
-<svelte:head>
-	<link
-		rel="stylesheet"
-		href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"
-		integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"
-		crossorigin="anonymous"
-	/>
-</svelte:head>
 
 
 <!-- {@html html} -->
