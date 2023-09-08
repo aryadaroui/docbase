@@ -110,6 +110,22 @@ caption
 :::
 ```
 
+## Code
+
+```
+:::code{#id src="code.py"}
+caption
+:::
+```
+
+```
+:::code{#id highlight="1-3 4 /carrot/"}
+
+:::
+```
+
+
+
 ## Plots
 
 ```

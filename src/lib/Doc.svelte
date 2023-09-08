@@ -18,7 +18,7 @@
 	import Node from './Node.svelte';
 
 
-	export let markdown;
+	export let hast;
 
 	// customElements.define('docbase-callout', Callout.element);
 
@@ -127,7 +127,7 @@
 
 	//  markdown = markdown.replace(/:::([a-zA-Z]+):([a-zA-Z]+)/g, '$1-$2');
 
-	const mast = remark().use(remarkGfm).use(remarkDirective).parse(markdown);
+	// const mast = remark().use(remarkGfm).use(remarkDirective).parse(markdown);
 
 	const processor = unified()
 		.use(remarkParse)
@@ -139,10 +139,10 @@
 		.use(rehypeKatex)
 		.use(rehypeStringify);
 
-	const hast = processor.runSync(processor.parse(markdown));
+	// const hast = processor.runSync(processor.parse(markdown));
 
-	const html = processor.processSync(markdown).toString();
-	console.log('mast: ', mast);
+	// const html = processor.processSync(markdown).toString();
+	// console.log('mast: ', mast);
 	console.log('hast: ', hast);
 	// console.log('hast: ', JSON.stringify(hast, null, 3));
 	// console.log(html);

@@ -3,7 +3,9 @@
 
 	export let data;
 
-	console.log('post: ', data);
+	console.log('hast: ', data);
+
 </script>
 
-<Doc markdown={data.post} />
+
+<Doc hast={data.hast} />

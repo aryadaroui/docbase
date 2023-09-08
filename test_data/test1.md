@@ -2,12 +2,14 @@
 
 A normal paragraph with :footnote[footnote here]. inline code `x^2`.
 
-code block
+code block below this line
 
-```js
-f(x) = x^2
+```python
+def function():
+	pass
 ```
 
+code block above this line
 
 :::callout{#id .warning}
 callout title
