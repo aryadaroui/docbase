@@ -16,7 +16,22 @@ import rehypePrettyCode from 'rehype-pretty-code';
 
 import { visit } from 'unist-util-visit';
 
+function log_node() {
+	return (tree) => {
+		visit(tree, (node) => {
+			// if (node.type === 'text') {
+			// 	// supposed to replace foo:bar with foo-bar
+			// 	node.value = node.value.replace(/:::([a-zA-Z]+):([a-zA-Z]+)/g, '$1-$2');
+			// }
 
+			if (node.type === 'code' || node.type.startsWith('directive')) {
+				console.log("log node: ", node);
+			}
+		});
+	};
+}
+
+// function 
 
 function convert_directive() {
 	return (tree) => {
@@ -31,6 +46,8 @@ function convert_directive() {
 				};
 				node.data = Object.assign({}, node.data, data);
 			} else if (node.type === 'leafDirective' || node.type === 'containerDirective') {
+
+				console.log("directive before: ", node);
 				const data = {
 					hName: 'directive-block',
 					hProperties: {
@@ -39,21 +56,30 @@ function convert_directive() {
 					}
 				};
 				node.data = Object.assign({}, node.data, data);
-			}
 
-			// if (
-			// 	node.type === 'textDirective' ||
-			// 	node.type === 'leafDirective' ||
-			// 	node.type === 'containerDirective'
-			// ) {
-			// 	const data = {
-			// 		hName: node.name,
-			// 		hProperties: {
-			// 			...node.attributes
-			// 		}
-			// 	};
-			// 	node.data = Object.assign({}, node.data, data);
-			// }
+
+				if (node.children[0].type === 'code') {
+					// if node.attributes.h_lines exists, then add it to the child's meta string
+					let temp = '';
+
+
+					if (node.attributes.h_lines) {
+						// replace spaces with commas
+						temp += '{' + node.attributes.h_lines.replace(/ /g, ',') + '}';
+					}
+
+					if (node.attributes.h_chars) {
+						// surround each alpha string with /'s. e.g. "foo bar" -> "/foo/ /bar/"
+						temp += node.attributes.h_chars.replace(/([a-zA-Z]+)/g, ' /$1/');
+					}
+
+					if (node.attributes.h_lines || node.attributes.h_chars) {
+						node.children[0].meta = temp;
+					}
+				}
+
+				console.log("directive after: ", node);
+			}
 		});
 	};
 }
@@ -63,11 +89,11 @@ function convert_directive() {
 export async function load({ params }) {
 	const markdown_post = fs.readFileSync('./test_data/test1.md', 'utf-8');
 
-
 	const processor = unified()
 		.use(remarkParse)
 		.use(remarkGfm)
 		.use(remarkMath)
+		.use(log_node)
 		.use(remarkDirective)
 		.use(convert_directive)
 		.use(remarkRehype)

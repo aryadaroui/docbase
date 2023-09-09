@@ -2,6 +2,7 @@
 	import Callout from './Callout.svelte';
 	import Text from './Text.svelte';
 	import Footnote from './Footnote.svelte';
+	import Code from './Code.svelte';
 
 	export let props: { [key: string]: string };
 	export let children: any[];
@@ -18,7 +19,8 @@
 	let component_map = {
 		callout: Callout,
 		text: Text,
-		footnote: Footnote
+		footnote: Footnote,
+		code: Code
 	};
 
 	// console.log(props);
