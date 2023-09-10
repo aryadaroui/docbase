@@ -6,6 +6,7 @@
 
 	export let props: { [key: string]: string };
 	export let children: any[];
+	export let counter: (name: string) => number;
 
 	// let nesting_level = 0;
 	let { name, class: type, ...rest } = props;
@@ -13,7 +14,8 @@
 	let prop_pass = {
 		...rest,
 		type,
-		children
+		children,
+		counter
 	};
 
 	let component_map = {
@@ -23,12 +25,8 @@
 		code: Code
 	};
 
+
 	// console.log(props);
 </script>
 
-<!-- <div> -->
-<!-- <p>directive!</p> -->
-
 <svelte:component this={component_map[props.name]} {...prop_pass} />
-
-<!-- </div> -->

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Doc from '$lib/Doc.svelte';
+	import Page from '$lib/Page.svelte';
 
 	export let data;
 
@@ -12,7 +12,7 @@
 	}
 </script>
 
-<Doc hast={data.hast} />
+<Page hast={data.hast} />
 
 <style lang="scss">
 	:global([data-highlighted-line]) {

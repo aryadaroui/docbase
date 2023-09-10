@@ -2,7 +2,10 @@
 	import { toHtml } from 'hast-util-to-html';
 
 	export let children;
+	export let counter: (name: string) => number;
 
+
+	let count = counter('code');
 
 	let html = toHtml({
 		type: 'root',
@@ -12,6 +15,8 @@
 
 <div class="container">
 	{@html html}
+
+	<p>Code block {count}</p>
 </div>
 
 <style lang="scss">

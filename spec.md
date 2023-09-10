@@ -39,7 +39,7 @@ pink: love, heart, smile
 ### normal callout
 
 ```
-:::callout{#id .type}
+:::callout{#id .type .}
 title
 ***
 body

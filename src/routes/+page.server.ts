@@ -2,7 +2,6 @@ import fs from 'fs';
 
 // unified.js imports
 import { unified } from 'unified';
-import { remark } from 'remark';
 
 import remarkDirective from 'remark-directive';
 import remarkGfm from 'remark-gfm';
@@ -14,96 +13,117 @@ import rehypeKatex from 'rehype-katex';
 import rehypeStringify from 'rehype-stringify';
 import rehypePrettyCode from 'rehype-pretty-code';
 
-
 import { visit } from 'unist-util-visit';
+import type { Parent, Node } from 'unist';
+
+interface DirectiveNode extends Node {
+	name: string;
+	attributes: {
+		[key: string]: string;
+	};
+	children: Node[];
+}
+
+interface CodeNode extends Node {
+	type: 'code';
+	lang: string;
+	meta: string | null;
+	value: string;
+}
 
 function log_node() {
-	return (tree) => {
-		visit(tree, (node) => {
-			// if (node.type === 'text') {
-			// 	// supposed to replace foo:bar with foo-bar
-			// 	node.value = node.value.replace(/:::([a-zA-Z]+):([a-zA-Z]+)/g, '$1-$2');
-			// }
+	return (tree: Parent) => {
+		visit(tree, (node: Node) => {
 
-			if (node.type === 'code' || node.type.startsWith('directive')) {
-				console.log("log node: ", node);
-			}
+			console.log("log node: ", node);
+
+			// if (node.type === 'code' || node.type.startsWith('directive')) {
+			// 	console.log("log node: ", node);
+			// }
 		});
 	};
 }
 
-// function 
+function handle_code(node: DirectiveNode) {
+	// if node.attributes.h_lines exists, then add it to the child's meta string
+	let temp = '';
+
+	if (node.attributes.h_lines) {
+		// replace spaces with commas
+		temp += '{' + node.attributes.h_lines.replace(/ /g, ',') + '}';
+	}
+
+	if (node.attributes.h_chars) {
+		// surround each alpha string with /'s. e.g. "foo bar" -> "/foo/ /bar/"
+		temp += node.attributes.h_chars.replace(/([a-zA-Z]+)/g, ' /$1/');
+	}
+
+	if ((node.attributes.h_lines || node.attributes.h_chars) && node.children[0].type === 'code') {
+		const code_node = node.children[0] as CodeNode;
+		code_node.meta = temp;
+	}
+}
 
 function convert_directive() {
-	return (tree) => {
-		visit(tree, (node) => {
+	return (tree: Parent) => {
+		visit(tree, (node: Node) => {
 			if (node.type === 'textDirective') {
+				const directive_node = node as DirectiveNode;
+
 				const data = {
 					hName: 'directive-inline',
 					hProperties: {
-						name: node.name,
-						...node.attributes
+						name: directive_node.name,
+						...directive_node.attributes
 					}
 				};
-				node.data = Object.assign({}, node.data, data);
+				directive_node.data = Object.assign({}, directive_node.data, data);
+				// node.data = Object.assign({}, node.data, data);
 			} else if (node.type === 'leafDirective' || node.type === 'containerDirective') {
+				const directive_node = node as DirectiveNode;
 
-				console.log("directive before: ", node);
+
 				const data = {
 					hName: 'directive-block',
 					hProperties: {
-						name: node.name,
-						...node.attributes
+						name: directive_node.name,
+						...directive_node.attributes
 					}
 				};
-				node.data = Object.assign({}, node.data, data);
+				directive_node.data = Object.assign({}, node.data, data);
 
+				handle_code(directive_node);
 
-				if (node.children[0].type === 'code') {
-					// if node.attributes.h_lines exists, then add it to the child's meta string
-					let temp = '';
-
-
-					if (node.attributes.h_lines) {
-						// replace spaces with commas
-						temp += '{' + node.attributes.h_lines.replace(/ /g, ',') + '}';
-					}
-
-					if (node.attributes.h_chars) {
-						// surround each alpha string with /'s. e.g. "foo bar" -> "/foo/ /bar/"
-						temp += node.attributes.h_chars.replace(/([a-zA-Z]+)/g, ' /$1/');
-					}
-
-					if (node.attributes.h_lines || node.attributes.h_chars) {
-						node.children[0].meta = temp;
-					}
-				}
-
-				console.log("directive after: ", node);
 			}
 		});
 	};
 }
 
+// To be very clear, the HTML should be stored too.
 
-
-export async function load({ params }) {
+export async function load() {
 	const markdown_post = fs.readFileSync('./test_data/test1.md', 'utf-8');
 
+	// i don't know why unified's typing is messed up here
 	const processor = unified()
+		// @ts-ignore
 		.use(remarkParse)
+		// @ts-ignore
 		.use(remarkGfm)
+		// @ts-ignore
 		.use(remarkMath)
 		.use(log_node)
+		// @ts-ignore
 		.use(remarkDirective)
 		.use(convert_directive)
+		// @ts-ignore
 		.use(remarkRehype)
 		.use(rehypeKatex)
 		.use(rehypePrettyCode)
 		.use(rehypeStringify);
 
+	// @ts-ignore
 	const hast = await processor.run(processor.parse(markdown_post));
-
 
 	return { hast: hast };
 }
