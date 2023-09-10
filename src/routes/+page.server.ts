@@ -10,30 +10,15 @@ import remarkParse from 'remark-parse';
 import remarkMath from 'remark-math';
 
 import rehypeKatex from 'rehype-katex';
-import rehypeStringify from 'rehype-stringify';
 import rehypePrettyCode from 'rehype-pretty-code';
 
 import { visit } from 'unist-util-visit';
-import type { Parent, Node } from 'unist';
+import type { Root, NodeUnified, ParentUnified, DirectiveNode, CodeNode } from '$lib/types';
 
-interface DirectiveNode extends Node {
-	name: string;
-	attributes: {
-		[key: string]: string;
-	};
-	children: Node[];
-}
-
-interface CodeNode extends Node {
-	type: 'code';
-	lang: string;
-	meta: string | null;
-	value: string;
-}
 
 function log_node() {
-	return (tree: Parent) => {
-		visit(tree, (node: Node) => {
+	return (tree: ParentUnified) => {
+		visit(tree, (node: NodeUnified) => {
 
 			console.log("log node: ", node);
 
@@ -65,8 +50,8 @@ function handle_code(node: DirectiveNode) {
 }
 
 function convert_directive() {
-	return (tree: Parent) => {
-		visit(tree, (node: Node) => {
+	return (tree: ParentUnified) => {
+		visit(tree, (node: NodeUnified) => {
 			if (node.type === 'textDirective') {
 				const directive_node = node as DirectiveNode;
 
@@ -112,18 +97,19 @@ export async function load() {
 		.use(remarkGfm)
 		// @ts-ignore
 		.use(remarkMath)
-		.use(log_node)
+		// .use(log_node)
 		// @ts-ignore
 		.use(remarkDirective)
 		.use(convert_directive)
 		// @ts-ignore
 		.use(remarkRehype)
+		// @ts-ignore
 		.use(rehypeKatex)
-		.use(rehypePrettyCode)
-		.use(rehypeStringify);
+		.use(rehypePrettyCode);
+	// .use(rehypeStringify);
 
 	// @ts-ignore
-	const hast = await processor.run(processor.parse(markdown_post));
+	const hast: Root = await processor.run(processor.parse(markdown_post));
 
 	return { hast: hast };
 }
