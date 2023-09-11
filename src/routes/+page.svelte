@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Page from '$lib/Page.svelte';
-	import Custom from '$lib/Custom.svelte';
-	import Cust from '$lib/Cust.svelte';
+	// import Custom from '$lib/Custom.svelte';
+	// import Cust from '$lib/Cust.svelte';
 
 	import { setContext } from 'svelte';
 

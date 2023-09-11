@@ -7,6 +7,7 @@
 	export let id: string;
 	export let type: string = 'none';
 	export let children: any[];
+	export let count: string;
 
 	let title: string;
 	let body = {
@@ -60,7 +61,7 @@
 	<div class="body">
 		<Node node={body} />
 	</div>
-	<enumeration> Callout 1 </enumeration>
+	<enumeration> Callout {count} </enumeration>
 </callout>
 
 <style lang="scss">
