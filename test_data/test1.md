@@ -14,11 +14,17 @@ $$
 \end{equation}
 $$
 
-:::callout{#id .no-num}
+:::callout{#id .info label="wow"}
 asdf
 :::
 
-:::callout{#id .no-num}
+:::callout{#id .summary name="wow"}
+zxcv
+:::
+
+
+
+:::callout{#id .warning}
 qwrt
 :::
 

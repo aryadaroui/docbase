@@ -31,15 +31,28 @@ function log_node() {
 }
 
 function count_label(directive_node: DirectiveNode) {
-	const name = directive_node.name;
-	const count = label_counter.get(name) || 0;
-	label_counter.set(name, count + 1);
+	let count;
+	if (directive_node.attributes.label) { // if label exists, then count it
+		const label = directive_node.attributes.label;
+		count = label_counter.get(label) || 0;
+		label_counter.set(label, count + 1);
+	} else { // else use the default directive name instead
+		const name = directive_node.name;
+		count = label_counter.get(name) || 0;
+		label_counter.set(name, count + 1);
+	}
 
 	directive_node.attributes['count'] = String(count + 1);
 }
 
 function handle_directive(directive_node: DirectiveNode) {
 
+	// remove name attribute if it exists
+	// this is because the name is already stored in the node.name
+	// we rely on that to dynamically generate the svelte component
+	if (directive_node.attributes.name) {
+		delete directive_node.attributes.name;
+	}
 
 	count_label(directive_node);
 
@@ -49,10 +62,7 @@ function handle_directive(directive_node: DirectiveNode) {
 
 	} else if (directive_node.type === 'leafDirective' || directive_node.type === 'containerDirective') {
 
-
-
 		handle_code_block(directive_node);
-
 	}
 
 	const data = {
