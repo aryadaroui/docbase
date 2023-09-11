@@ -1,5 +1,14 @@
 <script lang="ts">
 	import Page from '$lib/Page.svelte';
+	import Custom from '$lib/Custom.svelte';
+	import Cust from '$lib/Cust.svelte';
+
+	import { setContext } from 'svelte';
+
+	setContext('counters', {
+		one: 1,
+		two: 2
+	});
 
 	export let data;
 
