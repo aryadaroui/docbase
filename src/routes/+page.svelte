@@ -19,7 +19,14 @@
 			() => console.clear()
 		);
 	}
+
+	// let html = `<custom-element some_data="hello world" count="1.1">slotted data</custom-element>`;
 </script>
+
+<!-- {@html html} -->
+
+<!-- <custom-element some_data="goodbye world" count="2.2">other data</custom-element> -->
+<!-- <Cust /> -->
 
 <Page hast={data.hast} />
 

@@ -1,0 +1,29 @@
+title: Document Title
+authors:
+	- Author Name
+organization: Big Company
+style: midnight
+
+# publish_time: '2023-07-28T20:11:07.750Z'
+# latest_edit: '2023-09-28T20:11:07.750Z'
+
+# Items in the contents are filenames for each section
+contents:
+  - *Foreword
+  - Being
+    - Biological life
+      - Animals
+      - Plants
+    - Inanimate materials
+  - Nothingness
+
+syntax: docbase 0.1
+labels:
+	callout:
+		# :ref'ing will override this setting to "true"
+		enumerate: false
+		format: "Cool callout #"
+	equation:
+		enumerate: true
+    format: "(#)"
+		

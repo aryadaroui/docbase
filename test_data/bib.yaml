@@ -1,0 +1,15 @@
+
+item 1:
+  author: Author
+  organization: Organization
+  title: Title
+  link: http://www.example.com
+  date_published: '2012-01-01'
+  date_accessed: '2013-01-01'
+item 2: 
+  author: Another Author
+  organization: Another Organization
+  title: Another Title
+  link: http://www.example2.com
+  date_published: '2011-01-01'
+  date_accessed: '2013-01-02'

@@ -1,3 +1,24 @@
+---
+title: Test 1
+---
+
+$$
+\begin{equation}
+\frac{1}{2}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+\frac{1}{2}
+\end{equation}
+$$
+
+:::callout{#id .no-num}
+asdf
+:::
+
+
 
 ```python
 def function():

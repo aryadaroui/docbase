@@ -1,6 +1,62 @@
-# Inline
+# File organization
 
-## Footnotes
+This is *digital* text media. In print media, we have many pages because the amount of content overflows a single page. In digital media, we don't have that limitation because we can scroll. so instead, we can use pages as a tool for grouping.
+
+Works can be posted as
+
+As a single page or hierarchies of pages
+
+- Document
+  - Page
+    - Headings
+
+- Journal
+  - A catalog of existing 
+
+We can see that this is mostly hierarchical. If your writing is "flat" with more than three consecutive units, consider adding another layer to the hierarchy. E.g. heading 1, heading 1,  heading 1 -> heading 1 heading 2 heading 1 heading 2 heading 1 heading 2
+
+Each page is written as a .md file, with most of the same formatting as GitHub Flavored Markdown. Sections are by default numbered, but can be left unenumerated with *
+
+```yaml
+# document.config.yaml
+title: Document Title
+authors:
+	- Author Name
+organization: Big Company
+style: midnight
+
+contents:
+  - *Foreword
+  - Being
+    - Biological life
+      - Animals
+      - Plants
+    - Inanimate materials
+  - Nothingness
+
+syntax: docbase 0.1
+labels:
+	callout:
+		# :ref'ing will override this setting to "true"
+		enumerate: false
+		format: "Cool callout"
+	diagram:
+		enumerate: true
+		format: "Diagram"
+	equation:
+		enumerate: true
+		
+```
+
+
+
+
+
+# Directives
+
+## Inline
+
+### Footnotes
 
 footnote should be an element that is displayed on hover
 
@@ -8,7 +64,7 @@ footnote should be an element that is displayed on hover
 :foonote[footnote text]{#id}
 ```
 
-## References
+### References
 
 converts to a smart link with text for target ID type
 
@@ -16,13 +72,13 @@ converts to a smart link with text for target ID type
 :ref[#target_id]
 ```
 
-## Highlight
+### Highlight
 
 `:highlight[hilighted text]{#id}`
 
-# Block
+## Block
 
-## Callouts
+### Callouts
 
 Can have the following types / icons / colors:
 
@@ -36,7 +92,7 @@ red: danger, error, failure, x, bug, fire
 pink: love, heart, smile
 ```
 
-### normal callout
+#### normal callout
 
 ```
 :::callout{#id .type .}
@@ -46,7 +102,7 @@ body
 :::
 ```
 
-### dropdown
+#### dropdown
 
 ```
 :::callout-dropdown{#id. .type}
@@ -56,9 +112,9 @@ body
 :::
 ```
 
-## Figures
+### Figures
 
-### Normal figure
+#### Normal figure
 
 ```
 :::figure{#id src="image.webp"}
@@ -66,7 +122,7 @@ caption
 :::
 ```
 
-### Slideshow
+#### Slideshow
 
 ```
 :::figure-slideshow{#id src="image1.webp image2.webp"}
@@ -74,7 +130,7 @@ caption
 :::
 ```
 
-### Slider
+#### Slider
 
 ```
 :::figure-slider{#id src="image1.webp image2.webp"}
@@ -82,7 +138,7 @@ caption
 :::
 ```
 
-## Diagrams
+### Diagrams
 
 Specifically for vector diagrams. Has different counter than Figure.
 
@@ -92,7 +148,7 @@ caption
 :::
 ```
 
-## Tables
+### Tables
 
 ```
 :::table{#id src="table.md"}
@@ -110,7 +166,7 @@ caption
 :::
 ```
 
-## Code
+### Code
 
 ```
 :::code{#id src="code.py"}
@@ -126,7 +182,7 @@ caption
 
 
 
-## Plots
+### Plots
 
 ```
 :::plot-plotly{#id src="data.json"}
@@ -134,7 +190,7 @@ caption
 :::
 ```
 
-## Equations
+### Equations
 
 ```
 ::equation{#id src="eqn.tex"}
@@ -154,7 +210,7 @@ $$
 :::
 ```
 
-## Academic
+### Academic
 
 ```
 :::theorem{#id}
@@ -212,7 +268,7 @@ body
 
 Pair an exercise block with an internal `callout-dropdown` to hide the solution.
 
-## Audio
+### Audio
 
 ```
 :::audio{#id src="song.m4a"}
@@ -226,7 +282,7 @@ caption
 :::
 ```
 
-## Video
+### Video
 
 Video source must be an external hyperlink!
 
@@ -236,7 +292,7 @@ caption
 :::
 ```
 
-## Tabs
+### Tabs
 
 ```
 :::tab{#id}
@@ -246,7 +302,7 @@ Content 2
 :::
 ```
 
-## Blocks
+### Blocks
 
 You can have a generic expandable block
 
@@ -277,7 +333,7 @@ Within it, you can have horizontal sub-blocks
 ::::
 ```
 
-## References
+### References
 
 ```
 ::references{#id src="references.json"}
