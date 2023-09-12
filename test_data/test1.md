@@ -14,7 +14,7 @@ $$
 \end{equation}
 $$
 
-:::callout{#id .info label="wow"}
+:::callout{#id .info .nonum label="wow"}
 asdf
 :::
 

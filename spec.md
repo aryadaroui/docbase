@@ -166,6 +166,8 @@ caption
 :::
 ```
 
+
+
 ### Code
 
 ```
@@ -185,7 +187,7 @@ caption
 ### Plots
 
 ```
-:::plot-plotly{#id src="data.json"}
+:::plotly{#id src="data.json"}
 caption
 :::
 ```
@@ -339,3 +341,20 @@ Within it, you can have horizontal sub-blocks
 ::references{#id src="references.json"}
 ```
 
+### Embedded
+
+Google Sheets
+
+```
+:::embedded-sheets{#id src="url"}
+caption
+:::
+```
+
+Replit
+
+```
+:::embedded-replit{#id src="url"}
+caption
+:::
+```

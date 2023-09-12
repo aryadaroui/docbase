@@ -12,6 +12,7 @@
 
 	export let data;
 
+
 	if (import.meta.hot) {
 		import.meta.hot.on(
 			'vite:beforeUpdate',
@@ -20,6 +21,7 @@
 		);
 	}
 
+	// console.log('data: ', data);
 	// let html = `<custom-element some_data="hello world" count="1.1">slotted data</custom-element>`;
 </script>
 
@@ -28,7 +30,7 @@
 <!-- <custom-element some_data="goodbye world" count="2.2">other data</custom-element> -->
 <!-- <Cust /> -->
 
-<Page hast={data.hast} />
+<Page hast={data.body} />
 
 <style lang="scss">
 	:global([data-highlighted-line]) {
