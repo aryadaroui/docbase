@@ -16,6 +16,11 @@ import rehypePrettyCode from 'rehype-pretty-code';
 import { visit } from 'unist-util-visit';
 import type { Root, NodeUnified, ParentUnified, DirectiveNode, CodeNode } from '$lib/types';
 
+
+const pretty_code_options: import('rehype-pretty-code').Options = {
+	theme: 'rose-pine-moon'
+};
+
 const label_counter = new Map<string, number>();
 
 function log_node() {
@@ -123,7 +128,7 @@ export async function load() {
 	label_counter.clear(); // init label counter
 
 	// the field `file_body` contains the rest of the markdown file
-	const frontmatter = safeLoadFront(markdown_post, {contentKeyName: 'file_body'});
+	const frontmatter = safeLoadFront(markdown_post, { contentKeyName: 'file_body' });
 
 	// i don't know why the unified.js typing is messed up here
 	// cannot find a reasonable example online either
@@ -141,12 +146,12 @@ export async function load() {
 		.use(remarkRehype)
 		// @ts-ignore
 		.use(rehypeKatex)
-		.use(rehypePrettyCode);
+		.use(rehypePrettyCode, pretty_code_options);
 	// TS is confused about the return of .run(), it is a promise;
 	// the await is needed!
 	// @ts-ignore
 	const body: Root = await processor.run(processor.parse(frontmatter.file_body));
-	
+
 	// console.log("frontmatter: ", String(frontmatter));
 	console.log("hast: ", body);
 	label_counter.clear(); // reset label counter

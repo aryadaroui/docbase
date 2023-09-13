@@ -8,26 +8,13 @@ $$
 \end{equation}
 $$
 
-$$
-\begin{equation}
-\frac{1}{2}
-\end{equation}
-$$
-
-:::callout{#id .info .nonum label="wow"}
-asdf
-:::
-
 :::callout{#id .summary name="wow"}
 zxcv
 :::
 
-
-
 :::callout{#id .warning}
 qwrt
 :::
-
 
 ```python
 def function():
@@ -41,4 +28,4 @@ print("wow wow wow")
 ```
 
 
-asdf :1[sdf]
+asdf :footnote[sdf]

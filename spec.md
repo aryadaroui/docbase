@@ -50,6 +50,9 @@ labels:
 
 
 
+- Headings are foldable
+- Links without preview show the URL instead
+
 
 
 # Directives
