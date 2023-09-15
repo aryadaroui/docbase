@@ -23,15 +23,15 @@ const pretty_code_options: import('rehype-pretty-code').Options = {
 
 // const prefix_counter = new Map<string, number>();
 
-// interface RefID {
-// 	// prefix: string;
-// 	// count: number;
-// 	html_id: string;
-// }
+interface RefID {
+	prefix: string;
+	count: string;
+	html_id: string;
+}
 
-const prefix_dict: { [key: string]: string } = {
-    'code': 'Code block',
-    'callout': 'Callout',
+const prefix_dict: { [key: string]: string; } = {
+	'code': 'Code block',
+	'callout': 'Callout',
 };
 
 
@@ -53,7 +53,7 @@ const prefix_counter = {
 };
 
 
-const ref_dict = new Map<string, string>();
+const ref_dict: { [key: string]: RefID; } = {};
 
 function log_node() {
 	return (tree: ParentUnified) => {
@@ -68,20 +68,27 @@ function log_node() {
 	};
 }
 
-function count_prefix(directive_node: DirectiveNode) {
-	let count;
-	if (directive_node.attributes.prefix) { // if prefix exists, then count it
-		const prefix = directive_node.attributes.prefix;
-		count = prefix_counter.get(prefix) || 0;
-		prefix_counter.set(prefix, count + 1);
-	} else { // else use the default directive name instead
-		const name = directive_node.name;
-		count = prefix_counter.get(name) || 0;
-		prefix_counter.set(name, count + 1);
-	}
+function handle_ref(directive_node: DirectiveNode) {
+	if (directive_node.name === 'ref') {
 
-	directive_node.attributes.count = String(count + 1);
-	directive_node.attributes.prefix = directive_node.attributes.prefix || directive_node.name; // set `.prefix` to `.name` if `.prefix` doesn't exist
+		let target = directive_node.children[0].value;
+		// if target starts with a "#", then remove it
+		if (target.startsWith('#')) {
+			target = target.slice(1);
+		}
+
+		// check if key exists in ref_dict
+		if (ref_dict[target]) {
+
+			directive_node.attributes.prefix = ref_dict[target].prefix;
+			directive_node.attributes.count = ref_dict[target].count;
+			directive_node.attributes.html_id = ref_dict[target].html_id;
+		} else {
+			directive_node.attributes.prefix = "Error:";
+			directive_node.attributes.count = "bad ref";
+			directive_node.attributes.html_id = "";
+		}
+	}
 }
 
 function handle_labels() {
@@ -96,15 +103,21 @@ function handle_labels() {
 				prefix_counter.increment(directive_node.attributes.prefix);
 				directive_node.attributes.count = String(prefix_counter.get(directive_node.attributes.prefix));
 
-				// if attributes.id exists, set attributes.ref_id to it
-				if (directive_node.attributes.id) {
-					directive_node.attributes.ref_id = directive_node.attributes.id;
-					delete directive_node.attributes.id;
-				}
+
 
 				// set html_id to prefix + count but in hyphen-case
-				const html_id = directive_node.attributes.prefix + '-' + directive_node.attributes.count;
-				directive_node.attributes.html_id = html_id.toLowerCase().replace(/ /g, '-');
+				directive_node.attributes.html_id = (directive_node.attributes.prefix + '-' + directive_node.attributes.count).toLowerCase().replace(/ /g, '-');
+
+				// handle ref_id if provided id
+				if (directive_node.attributes.id) {
+					directive_node.attributes.ref_id = directive_node.attributes.id;
+					ref_dict[directive_node.attributes.ref_id] = {
+						prefix: directive_node.attributes.prefix,
+						count: directive_node.attributes.count,
+						html_id: directive_node.attributes.html_id
+					};
+					delete directive_node.attributes.id;
+				}
 			}
 		});
 	};
@@ -123,7 +136,7 @@ function handle_directive(directive_node: DirectiveNode) {
 
 	if (directive_node.type === 'textDirective') {
 
-		// pass
+		handle_ref(directive_node);
 
 	} else if (directive_node.type === 'leafDirective' || directive_node.type === 'containerDirective') {
 

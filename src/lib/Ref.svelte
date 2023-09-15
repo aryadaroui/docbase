@@ -3,14 +3,8 @@
 	// let post_url = ''
 	// export let target_html_id: string;
 	export let prefix: string;
-	export let count: number;
-
-
-	function make_html_id(prefix: string, count: number): string {
-		return dashify(prefix) + "-" + count;
-	}
-
-	let html_id = make_html_id(prefix, count);
+	export let count: string;
+	export let html_id: string;
 
 </script>
 

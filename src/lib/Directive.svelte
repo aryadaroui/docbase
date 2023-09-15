@@ -3,6 +3,7 @@
 	import Text from './Text.svelte';
 	import Footnote from './Footnote.svelte';
 	import Code from './Code.svelte';
+	import Ref from './Ref.svelte';
 	import type { Properties, ElementContent } from './types';
 
 	// export let props: { [key: string]: string };
@@ -33,7 +34,8 @@
 		callout: Callout,
 		text: Text,
 		footnote: Footnote,
-		code: Code
+		code: Code,
+		ref: Ref
 	};
 
 </script>

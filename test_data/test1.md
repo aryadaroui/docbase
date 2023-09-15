@@ -20,8 +20,7 @@ print("2")
 this is the caption
 :::
 
-
-:::code{#code-test h_lines="2"}
+:::code{#code-test-asdf h_lines="2"}
 ```python
 print("0")
 print("1")
@@ -31,7 +30,7 @@ print("2")
 this is the caption
 :::
 
-:::callout{#id .summary name="wow"}
+:::callout{#id .summary prefix="wow"}
 zxcv
 :::
 
@@ -53,4 +52,4 @@ print("wow wow wow")
 ```
 
 
-<!-- this is a :ref[#id] -->
+this is a ref to :ref[#code-test].

@@ -3,8 +3,11 @@
 	import Caption from './Caption.svelte';
 
 	export let children;
+	export let prefix: string;
+	export let count: string;
+	export let html_id: string;
 	// export let counter: (name: string) => number;
-	export let count;
+	
 
 
 
@@ -16,10 +19,10 @@
 	});
 </script>
 
-<figure class="code-block">
+<figure id={html_id} class="code-block">
 	{@html html}
 
-	<Caption prefix="Code block" count={count} caption_text="caption text"></Caption>
+	<Caption prefix={prefix} count={count} caption_text="caption text"></Caption>
 </figure>
 
 <style lang="scss">
