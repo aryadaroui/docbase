@@ -8,12 +8,37 @@ $$
 \end{equation}
 $$
 
+:::code{#code-test h_lines="2"}
+this is the title
+***
+```python
+print("0")
+print("1")
+print("2")
+```
+***
+this is the caption
+:::
+
+
+:::code{#code-test h_lines="2"}
+```python
+print("0")
+print("1")
+print("2")
+```
+***
+this is the caption
+:::
+
 :::callout{#id .summary name="wow"}
 zxcv
 :::
 
 :::callout{#id .warning}
-qwrt
+This is the title of the callout
+***
+this is the body
 :::
 
 ```python
@@ -28,4 +53,4 @@ print("wow wow wow")
 ```
 
 
-asdf :footnote[sdf]
+<!-- this is a :ref[#id] -->

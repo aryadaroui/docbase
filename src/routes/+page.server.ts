@@ -21,7 +21,39 @@ const pretty_code_options: import('rehype-pretty-code').Options = {
 	theme: 'rose-pine-moon'
 };
 
-const label_counter = new Map<string, number>();
+// const prefix_counter = new Map<string, number>();
+
+// interface RefID {
+// 	// prefix: string;
+// 	// count: number;
+// 	html_id: string;
+// }
+
+const prefix_dict: { [key: string]: string } = {
+    'code': 'Code block',
+    'callout': 'Callout',
+};
+
+
+const prefix_counter = {
+	_map: new Map<string, number>(),
+	get(prefix: string) {
+		return this._map.get(prefix);
+	},
+	set(prefix: string, count: number) {
+		this._map.set(prefix, count);
+	},
+	clear() {
+		this._map.clear();
+	},
+	increment(prefix: string) {
+		const count = this.get(prefix) || 0;
+		this.set(prefix, count + 1);
+	}
+};
+
+
+const ref_dict = new Map<string, string>();
 
 function log_node() {
 	return (tree: ParentUnified) => {
@@ -36,31 +68,58 @@ function log_node() {
 	};
 }
 
-function count_label(directive_node: DirectiveNode) {
+function count_prefix(directive_node: DirectiveNode) {
 	let count;
-	if (directive_node.attributes.label) { // if label exists, then count it
-		const label = directive_node.attributes.label;
-		count = label_counter.get(label) || 0;
-		label_counter.set(label, count + 1);
+	if (directive_node.attributes.prefix) { // if prefix exists, then count it
+		const prefix = directive_node.attributes.prefix;
+		count = prefix_counter.get(prefix) || 0;
+		prefix_counter.set(prefix, count + 1);
 	} else { // else use the default directive name instead
 		const name = directive_node.name;
-		count = label_counter.get(name) || 0;
-		label_counter.set(name, count + 1);
+		count = prefix_counter.get(name) || 0;
+		prefix_counter.set(name, count + 1);
 	}
 
-	directive_node.attributes['count'] = String(count + 1);
+	directive_node.attributes.count = String(count + 1);
+	directive_node.attributes.prefix = directive_node.attributes.prefix || directive_node.name; // set `.prefix` to `.name` if `.prefix` doesn't exist
+}
+
+function handle_labels() {
+	return (tree: ParentUnified) => {
+		visit(tree, (node: NodeUnified) => {
+			if (node.type === 'textDirective' || node.type === 'leafDirective' || node.type === 'containerDirective') {
+				const directive_node = node as DirectiveNode;
+
+				if (!directive_node.attributes.prefix) {
+					directive_node.attributes.prefix = prefix_dict[directive_node.name];
+				}
+				prefix_counter.increment(directive_node.attributes.prefix);
+				directive_node.attributes.count = String(prefix_counter.get(directive_node.attributes.prefix));
+
+				// if attributes.id exists, set attributes.ref_id to it
+				if (directive_node.attributes.id) {
+					directive_node.attributes.ref_id = directive_node.attributes.id;
+					delete directive_node.attributes.id;
+				}
+
+				// set html_id to prefix + count but in hyphen-case
+				const html_id = directive_node.attributes.prefix + '-' + directive_node.attributes.count;
+				directive_node.attributes.html_id = html_id.toLowerCase().replace(/ /g, '-');
+			}
+		});
+	};
 }
 
 function handle_directive(directive_node: DirectiveNode) {
 
 	// remove name attribute if it exists
-	// this is because the name is already stored in the node.name
+	// this is because the name is already stored in directive_node.name
 	// we rely on that to dynamically generate the svelte component
 	if (directive_node.attributes.name) {
 		delete directive_node.attributes.name;
 	}
 
-	count_label(directive_node);
+	// count_prefix(directive_node);
 
 	if (directive_node.type === 'textDirective') {
 
@@ -80,8 +139,8 @@ function handle_directive(directive_node: DirectiveNode) {
 	};
 	directive_node.data = Object.assign({}, directive_node.data, data);
 
-	console.log("directive_node: ", directive_node);
-	console.log("label_counter: ", label_counter);
+	// console.log("directive_node: ", directive_node);
+	// console.log("prefix_counter: ", prefix_counter);
 }
 
 function handle_code_block(node: DirectiveNode) {
@@ -125,7 +184,7 @@ function convert_directive() {
 
 export async function load() {
 	const markdown_post = fs.readFileSync('./test_data/test1.md', 'utf-8');
-	label_counter.clear(); // init label counter
+	prefix_counter.clear(); // init prefix counter
 
 	// the field `file_body` contains the rest of the markdown file
 	const frontmatter = safeLoadFront(markdown_post, { contentKeyName: 'file_body' });
@@ -141,20 +200,21 @@ export async function load() {
 		.use(remarkMath)
 		// @ts-ignore
 		.use(remarkDirective)
+		.use(handle_labels)
 		.use(convert_directive)
 		// @ts-ignore
 		.use(remarkRehype)
 		// @ts-ignore
 		.use(rehypeKatex)
 		.use(rehypePrettyCode, pretty_code_options);
-	// TS is confused about the return of .run(), it is a promise;
+	// TS is confused about the return of .run(), it *is* a promise;
 	// the await is needed!
 	// @ts-ignore
 	const body: Root = await processor.run(processor.parse(frontmatter.file_body));
 
 	// console.log("frontmatter: ", String(frontmatter));
 	console.log("hast: ", body);
-	label_counter.clear(); // reset label counter
+	prefix_counter.clear(); // reset prefix counter
 	return {
 		title: frontmatter.title,
 		body: body
