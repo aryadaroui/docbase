@@ -7,9 +7,6 @@
 	export let count: string;
 	export let html_id: string;
 	// export let counter: (name: string) => number;
-	
-
-
 
 	// let count = counter('code');
 
@@ -22,11 +19,15 @@
 <figure id={html_id} class="code-block">
 	{@html html}
 
-	<Caption prefix={prefix} count={count} caption_text="caption text"></Caption>
+	<Caption {prefix} {count} caption_text="caption text" />
 </figure>
 
 <style lang="scss">
 	.code-block {
-		border: 1px solid red;
+		display: block;
+		border: 1px solid black;
+		padding: 1em;
+		// width: 100%;
+		margin: 1em 0;
 	}
 </style>

@@ -110,8 +110,8 @@ function handle_labels() {
 
 				// handle ref_id if provided id
 				if (directive_node.attributes.id) {
-					directive_node.attributes.ref_id = directive_node.attributes.id;
-					ref_dict[directive_node.attributes.ref_id] = {
+					// directive_node.attributes.ref_id = directive_node.attributes.id;
+					ref_dict[directive_node.attributes.id] = {
 						prefix: directive_node.attributes.prefix,
 						count: directive_node.attributes.count,
 						html_id: directive_node.attributes.html_id
@@ -178,6 +178,16 @@ function handle_code_block(node: DirectiveNode) {
 		const code_node = node.children[0] as CodeNode;
 		code_node.meta = temp;
 	}
+
+	// remove h_lines and h_chars from node.attributes if they exist
+	if (node.attributes.h_lines) {
+		delete node.attributes.h_lines;
+	}
+	if (node.attributes.h_chars) {
+		delete node.attributes.h_chars;
+	}
+
+	// console.log("code block: ", node);
 }
 
 function convert_directive() {
@@ -193,6 +203,7 @@ function convert_directive() {
 	};
 }
 
+
 // To be very clear, the HTML should be stored too.
 
 export async function load() {
@@ -205,6 +216,7 @@ export async function load() {
 	// i don't know why the unified.js typing is messed up here
 	// cannot find a reasonable example online either
 	const processor = unified()
+		// .use(log_node)
 		// @ts-ignore
 		.use(remarkParse)
 		// @ts-ignore
@@ -226,7 +238,7 @@ export async function load() {
 	const body: Root = await processor.run(processor.parse(frontmatter.file_body));
 
 	// console.log("frontmatter: ", String(frontmatter));
-	console.log("hast: ", body);
+	// console.log("hast: ", body);
 	prefix_counter.clear(); // reset prefix counter
 	return {
 		title: frontmatter.title,

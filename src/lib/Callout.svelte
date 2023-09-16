@@ -57,7 +57,7 @@
 </script>
 
 <callout>
-	<div class="title">{type}: {title}</div>
+	<div class="title">{type + "_icon"}: {title}</div>
 	<div class="body">
 		<Node node={body} />
 	</div>

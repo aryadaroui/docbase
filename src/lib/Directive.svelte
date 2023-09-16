@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Callout from './Callout.svelte';
-	import Text from './Text.svelte';
-	import Footnote from './Footnote.svelte';
-	import Code from './Code.svelte';
-	import Ref from './Ref.svelte';
+	import Callout from '$lib/Callout.svelte';
+	import Text from '$lib/Text.svelte';
+	import Footnote from '$lib/Footnote.svelte';
+	import CodeBlock from '$lib/CodeBlock.svelte';
+	import Ref from '$lib/Ref.svelte';
 	import type { Properties, ElementContent } from './types';
 
 	// export let props: { [key: string]: string };
@@ -26,7 +26,6 @@
 
 	let prop_pass = {
 		...rest,
-		type,
 		children
 	};
 
@@ -34,7 +33,7 @@
 		callout: Callout,
 		text: Text,
 		footnote: Footnote,
-		code: Code,
+		code: CodeBlock,
 		ref: Ref
 	};
 

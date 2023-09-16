@@ -5,6 +5,7 @@
 	export let prefix: string;
 	export let count: string;
 	export let html_id: string;
+	export let children: any[]; // only to swallow the children prop
 
 </script>
 
