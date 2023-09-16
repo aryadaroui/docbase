@@ -119,9 +119,8 @@ export function handle_code_block(directive_node: DirectiveNode) {
 
 	// line numbers are the default
 	if (directive_node.attributes?.class_?.includes('no-num')) {
-		console.log("not adding line numbers");
+		// pass
 	} else {
-		console.log("adding line numbers");
 		temp += ' showLineNumbers';
 	}
 
@@ -139,15 +138,22 @@ export function handle_code_block(directive_node: DirectiveNode) {
 
 
 
-	// IF .h_start or h_end exists
-	// AND the node's first child is a code block
-	// THEN set the code block's meta = temp
-	if ((directive_node.attributes.h_lines || directive_node.attributes.h_chars) && directive_node.children[0].type === 'code') {
-		const code_node = directive_node.children[0] as CodeNode;
-		code_node.meta = temp;
-	}
+	// // IF .h_start or h_end exists
+	// // AND the node's first child is a code block
+	// // THEN set the code block's meta = temp
+	// if ((directive_node.attributes.h_lines || directive_node.attributes.h_chars) && directive_node.children[0].type === 'code') {
+	// 	const code_node = directive_node.children[0] as CodeNode;
+	// 	code_node.meta = temp;
+	// }
 
-	// remove h_lines and h_chars from node.attributes if they exist
+	// for each child, if it is a code block, set its meta = temp
+	directive_node.children.forEach((child) => {
+		if (child.type === 'code') {
+			const code_node = child as CodeNode;
+			code_node.meta = temp;
+		}
+	});
+
 	if (directive_node.attributes.h_lines) {
 		delete directive_node.attributes.h_lines;
 	}
