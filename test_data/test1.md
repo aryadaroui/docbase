@@ -25,4 +25,4 @@ this is the caption
 :::
 
 
-this is a ref to :ref[#code-test].
+this is a ref to :ref[].

@@ -10,6 +10,10 @@ export interface DirectiveNode extends Node {
 	children: Node[];
 }
 
+export interface TextNode extends Node {
+	value: string;
+}
+
 export interface CodeNode extends Node {
 	type: 'code';
 	lang: string;
