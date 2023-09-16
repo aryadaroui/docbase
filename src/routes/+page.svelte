@@ -30,3 +30,9 @@
 <!-- <Cust /> -->
 
 <Page hast={data.body} />
+
+<style lang="scss">
+	:global {
+		@import 'src/lib/global.scss';
+	}
+</style>
