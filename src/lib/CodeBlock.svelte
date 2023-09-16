@@ -6,6 +6,7 @@
 	export let prefix: string;
 	export let count: string;
 	export let html_id: string;
+	export let class_: string;
 	// export let counter: (name: string) => number;
 
 	// let count = counter('code');

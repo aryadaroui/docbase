@@ -20,7 +20,8 @@ import { prefix_counter, visit_directives, handle_code_block, handle_directive, 
 
 
 const pretty_code_options: import('rehype-pretty-code').Options = {
-	theme: 'rose-pine-moon'
+	theme: 'rose-pine-moon',
+	keepBackground: false,
 };
 
 // To be very clear, the HTML should be stored too.

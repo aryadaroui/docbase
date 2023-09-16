@@ -14,15 +14,14 @@ print("2")
 this is the caption
 :::
 
-:::code{#code-test-asdf h_lines="2"}
+:::code{#code-test h_lines="2" h_chars="asdf"}
 ```python
 print("0")
 print("1")
-print("2")
+print("asdf")
 ```
 ---
 this is the caption
 :::
 
-
-this is a ref to :ref[].
+this is a ref to :ref[#code-test].

@@ -114,36 +114,47 @@ export function prep_labels() {
  * handles code directives
  * - sets the meta string for the code block from the h_lines and h_chars attributes
  */
-export function handle_code_block(node: DirectiveNode) {
+export function handle_code_block(directive_node: DirectiveNode) {
 	let temp = ''; // temp string to store the meta string
 
+	// line numbers are the default
+	if (directive_node.attributes?.class_?.includes('no-num')) {
+		console.log("not adding line numbers");
+	} else {
+		console.log("adding line numbers");
+		temp += ' showLineNumbers';
+	}
+
 	// if node.attributes.h_lines exists, then add it to temp
-	if (node.attributes.h_lines) {
+	if (directive_node.attributes.h_lines) {
 		// replace spaces with commas
-		temp += '{' + node.attributes.h_lines.replace(/ /g, ',') + '}';
+		temp += ' {' + directive_node.attributes.h_lines.replace(/ /g, ',') + '}';
 	}
 
 	// if node.attributes.h_chars exists, then add it to temp
-	if (node.attributes.h_chars) {
+	if (directive_node.attributes.h_chars) {
 		// surround each alpha string with /'s. e.g. "foo bar" -> "/foo/ /bar/"
-		temp += node.attributes.h_chars.replace(/([a-zA-Z]+)/g, ' /$1/');
+		temp += directive_node.attributes.h_chars.replace(/([a-zA-Z]+)/g, ' /$1/');
 	}
+
+
 
 	// IF .h_start or h_end exists
 	// AND the node's first child is a code block
 	// THEN set the code block's meta = temp
-	if ((node.attributes.h_lines || node.attributes.h_chars) && node.children[0].type === 'code') {
-		const code_node = node.children[0] as CodeNode;
+	if ((directive_node.attributes.h_lines || directive_node.attributes.h_chars) && directive_node.children[0].type === 'code') {
+		const code_node = directive_node.children[0] as CodeNode;
 		code_node.meta = temp;
 	}
 
 	// remove h_lines and h_chars from node.attributes if they exist
-	if (node.attributes.h_lines) {
-		delete node.attributes.h_lines;
+	if (directive_node.attributes.h_lines) {
+		delete directive_node.attributes.h_lines;
 	}
-	if (node.attributes.h_chars) {
-		delete node.attributes.h_chars;
+	if (directive_node.attributes.h_chars) {
+		delete directive_node.attributes.h_chars;
 	}
+	console.log("code node: ", directive_node);
 
 }
 
@@ -159,6 +170,13 @@ export function handle_directive(directive_node: DirectiveNode) {
 	// we rely on that to dynamically generate the svelte component
 	if (directive_node.attributes.name) {
 		delete directive_node.attributes.name;
+	}
+
+	// rename attributes.class to attributes.class_
+	// because class is a reserved word and causes problems
+	if (directive_node.attributes.class) {
+		directive_node.attributes.class_ = directive_node.attributes.class;
+		delete directive_node.attributes.class;
 	}
 
 	// special handlers

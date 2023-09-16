@@ -22,7 +22,7 @@
 	const directive_props = props as DirectiveProperties;
 
 	// let nesting_level = 0;
-	let { name, class: type, ...rest } = directive_props;
+	let { name, ...rest } = directive_props;
 
 	let prop_pass = {
 		...rest,
