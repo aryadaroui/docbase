@@ -1,5 +1,5 @@
 import { visit } from 'unist-util-visit';
-import type { Root, NodeUnified, ParentUnified, DirectiveNode, CodeNode, TextNode } from '$lib/types';
+import type { Root, NodeUnified, ParentUnified, DirectiveNode, CodeNode, TextNode, HeadingNode } from '$lib/types';
 
 
 /** The label data for a ref_id */
@@ -33,6 +33,24 @@ export const prefix_counter = {
 	}
 };
 
+export const heading_counter = {
+	depths: [0, 0, 0, 0, 0, 0,],
+	increment(depth: number) {
+		this.depths[depth]++;
+
+		// set all deeper to 0
+		for (let i = depth + 1; i < this.depths.length; i++) {
+			this.depths[i] = 0;
+		}
+	},
+	reset(depth: number) {
+		this.depths[depth] = 0;
+	},
+	clear() {
+		this.depths = [0, 0, 0, 0, 0, 0,];
+	}
+};
+
 /** for each ref_id, stores the prefix, count, and html_id */
 const ref_dict: { [key: string]: LabelData; } = {};
 
@@ -41,6 +59,33 @@ function log_node() {
 		visit(tree, (node: NodeUnified) => {
 
 			console.log("log node: ", node);
+		});
+	};
+}
+
+export function enumerate_headings() {
+	return (tree: ParentUnified) => {
+		visit(tree, (node: NodeUnified) => {
+
+			if (node.type === 'heading') {
+				const heading_node = node as HeadingNode;
+				heading_counter.increment(heading_node.depth);
+
+				const count = heading_counter.depths.slice(1, heading_node.depth + 1).join('.') + '.';
+				// set the html id to "heading" + count.
+				// e.g. "heading-1.2."
+				heading_node.data = {
+					hProperties: {
+						id: 'heading-' + count,
+					}
+				};
+
+				ref_dict['heading-' + count] = {
+					prefix: 'Heading',
+					count: count,
+					html_id: 'heading-' + count
+				}
+			}
 		});
 	};
 }

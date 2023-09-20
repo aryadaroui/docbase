@@ -1,6 +1,15 @@
 ---
 title: Test 1
 ---
+### whoa
+
+# heading 1.
+
+## heading 1.1.
+
+#### heading 1.1.0.1.
+
+# heading 2.
 
 :::code{#code-test highlight="{1 3-5} /foo/ /bar/" filename="test.py" .class1 .class2}
 ```python
@@ -18,7 +27,7 @@ print("bar")
 this is the caption
 :::
 
-:::code{#code-test filename="test2.py"}
+:::code{ filename="test2.py"}
 ```python
 print("0")
 print("1")
@@ -29,3 +38,4 @@ this is the caption
 :::
 
 this is a ref to :ref[#code-test].
+this is a ref to :ref[#heading-0.0.1.].

@@ -15,7 +15,7 @@ import rehypePrettyCode from 'rehype-pretty-code';
 
 // import { visit } from 'unist-util-visit';
 import type { Root } from '$lib/types';
-import { prefix_counter, visit_directives, handle_code_block, handle_directive, prep_labels, handle_ref } from './remark_plugins';
+import { prefix_counter, heading_counter, visit_directives, prep_labels, enumerate_headings } from './remark_plugins';
 
 
 
@@ -29,6 +29,7 @@ const pretty_code_options: import('rehype-pretty-code').Options = {
 export async function load() {
 	const markdown_post = fs.readFileSync('./test_data/test1.md', 'utf-8');
 	prefix_counter.clear(); // init prefix counter
+	heading_counter.clear(); // init heading counter
 
 	// the field `file_body` contains the rest of the markdown file
 	const frontmatter = safeLoadFront(markdown_post, { contentKeyName: 'file_body' });
@@ -44,6 +45,7 @@ export async function load() {
 		.use(remarkMath)
 		// @ts-ignore
 		.use(remarkDirective)
+		.use(enumerate_headings)
 		.use(prep_labels)
 		.use(visit_directives)
 		// @ts-ignore
@@ -58,7 +60,8 @@ export async function load() {
 
 	// console.log("frontmatter: ", String(frontmatter));
 	// console.log("hast: ", body);
-	prefix_counter.clear(); // reset prefix counter
+	prefix_counter.clear(); 
+	heading_counter.clear();
 	return {
 		title: frontmatter.title,
 		body: body

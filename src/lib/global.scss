@@ -7,7 +7,14 @@ h6,
 p,
 figcaption {
 	font-family: 'Open sans';
+	color: beige;
 }
+
+html {
+	background-color: rgb(20, 23, 25);
+	scroll-behavior: smooth;
+}
+
 
 
 
@@ -78,3 +85,58 @@ code {
 	font-family: 'Hack';
 	font-size: 0.8em;
 }
+
+/// 
+
+h1 {
+	counter-reset: h2counter;
+	counter-increment: h1counter;
+  }
+  
+  h2 {
+	counter-reset: h3counter;
+	counter-increment: h2counter;
+  }
+  
+  h3 {
+	counter-reset: h4counter;
+	counter-increment: h3counter;
+  }
+  
+  h4 {
+	counter-reset: h5counter;
+	counter-increment: h4counter;
+  }
+  
+  h5 {
+	counter-reset: h6counter;
+	counter-increment: h5counter;
+  }
+  
+  h6 {
+	counter-increment: h6counter;
+  }
+  
+  h1:before {
+	content: counter(h1counter) ". ";
+  }
+  
+  h2:before {
+	content: counter(h1counter) "." counter(h2counter) ". ";
+  }
+  
+  h3:before {
+	content: counter(h1counter) "." counter(h2counter) "." counter(h3counter) ". ";
+  }
+  
+  h4:before {
+	content: counter(h1counter) "." counter(h2counter) "." counter(h3counter) "." counter(h4counter) ". ";
+  }
+  
+  h5:before {
+	content: counter(h1counter) "." counter(h2counter) "." counter(h3counter) "." counter(h4counter) "." counter(h5counter) ". ";
+  }
+  
+  h6:before {
+	content: counter(h1counter) "." counter(h2counter) "." counter(h3counter) "." counter(h4counter) "." counter(h5counter) "." counter(h6counter) ". ";
+  }

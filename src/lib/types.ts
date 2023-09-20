@@ -20,3 +20,9 @@ export interface CodeNode extends Node {
 	meta: string | null;
 	value: string;
 }
+
+export interface HeadingNode extends Node {
+	type: 'heading';
+	depth: number;
+	children: Node[];
+}
