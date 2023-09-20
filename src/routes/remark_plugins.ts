@@ -124,18 +124,21 @@ export function handle_code_block(directive_node: DirectiveNode) {
 		temp += ' showLineNumbers';
 	}
 
-	// if node.attributes.h_lines exists, then add it to temp
-	if (directive_node.attributes.h_lines) {
-		// replace spaces with commas
-		temp += ' {' + directive_node.attributes.h_lines.replace(/ /g, ',') + '}';
+	if (directive_node.attributes.highlight) {
+		// will be in the form of "{1 3-5} /foo/ /bar/".
+		// replace spaces with commas if they're within curly braces. e.g. "{1 3-5} /foo/ /bar/" -> "{1,3-5} /foo/ /bar/"
+		temp += ' ' + directive_node.attributes.highlight.replace(/(\{.*?\})/g, (match) => {
+			return match.replace(/ /g, ',');
+		}
+		);
+
 	}
 
-	// if node.attributes.h_chars exists, then add it to temp
-	if (directive_node.attributes.h_chars) {
-		// surround each alpha string with /'s. e.g. "foo bar" -> "/foo/ /bar/"
-		temp += directive_node.attributes.h_chars.replace(/([a-zA-Z]+)/g, ' /$1/');
+	if (directive_node.attributes.filename) {
+		temp += ' title="' + directive_node.attributes.filename + '"';
 	}
 
+	console.log("temp: ", temp);
 
 
 	// // IF .h_start or h_end exists
@@ -154,13 +157,7 @@ export function handle_code_block(directive_node: DirectiveNode) {
 		}
 	});
 
-	if (directive_node.attributes.h_lines) {
-		delete directive_node.attributes.h_lines;
-	}
-	if (directive_node.attributes.h_chars) {
-		delete directive_node.attributes.h_chars;
-	}
-	console.log("code node: ", directive_node);
+	// console.log("code node: ", directive_node);
 
 }
 

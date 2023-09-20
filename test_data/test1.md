@@ -2,19 +2,23 @@
 title: Test 1
 ---
 
-:::code{#code-test h_lines="2" .class1 .class2}
-this is the title
-***
+:::code{#code-test highlight="{1 3-5} /foo/ /bar/" filename="test.py" .class1 .class2}
 ```python
-print("0")
 print("1")
 print("2")
+print("3")
+print("4")
+print("5")
+print("6")
+print("asdf")
+print("foo")
+print("bar")
 ```
 ***
 this is the caption
 :::
 
-:::code{#code-test h_lines="2" h_chars="asdf"}
+:::code{#code-test h_lines="2" h_chars="asdf" filename="test.py"}
 ```python
 print("0")
 print("1")

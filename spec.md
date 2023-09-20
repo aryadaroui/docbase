@@ -18,7 +18,7 @@ We can see that this is mostly hierarchical. If your writing is "flat" with more
 Each page is written as a .md file, with most of the same formatting as GitHub Flavored Markdown. Sections are by default numbered, but can be left unenumerated with *
 
 ```yaml
-# document.config.yaml
+# docbase.config.yaml
 title: Document Title
 authors:
 	- Author Name
@@ -112,9 +112,7 @@ pink: love, heart, smile
 #### normal callout
 
 ```
-:::callout{#ref-id .type}
-title
-***
+:::callout{#ref-id .type title="the title"}
 body
 :::
 ```
@@ -122,9 +120,7 @@ body
 #### dropdown
 
 ```
-:::callout-dropdown{#ref-id. .type}
-title
-***
+:::callout-dropdown{#ref-id. .type title="the title"}
 body
 :::
 ```
@@ -183,8 +179,6 @@ caption
 :::
 ```
 
-
-
 ### Code
 
 ```
@@ -194,12 +188,12 @@ caption
 ```
 
 ```
-:::code{#ref-id highlight="1-3 4 /carrot/"}
-
+:::code{#ref-id highlight="{1-3 4} /carrot/" filename="file.txt"}
+body
+***
+caption
 :::
 ```
-
-
 
 ### Plots
 

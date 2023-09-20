@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { toHtml } from 'hast-util-to-html';
 	import Caption from './Caption.svelte';
+	import { group_by_hr } from './group_by_hr';
 
 	export let children;
 	export let prefix: string;
@@ -10,17 +11,36 @@
 	// export let counter: (name: string) => number;
 
 	// let count = counter('code');
+	// console.log('children: ', children);
 
-	let html = toHtml({
+	let children_grouped = group_by_hr(children, ['body', 'footer'], ['header', 'body', 'footer']);
+
+	console.log('children_grouped: ', children_grouped);
+
+	const body = toHtml({
 		type: 'root',
-		children
+		children: children_grouped.body
 	});
+
+	let caption = children_grouped.footer[0] || null;
+
+	if (caption.tagName === 'p') {
+		caption.tagName = 'span';
+	}
+
+	console.log('caption: ', caption);
+
+	// let html = toHtml({
+	// 	type: 'root',
+	// 	children
+	// });
 </script>
 
 <figure id={html_id} class="code-block">
-	{@html html}
 
-	<Caption {prefix} {count} caption_text="caption text" />
+	{@html body}
+
+	<Caption {prefix} {count} caption={caption} />
 </figure>
 
 <style lang="scss">

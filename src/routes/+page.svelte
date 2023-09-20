@@ -20,7 +20,7 @@
 		);
 	}
 
-	console.log('data: ', data);
+	// console.log('data: ', data);
 	// let html = `<custom-element some_data="hello world" count="1.1">slotted data</custom-element>`;
 </script>
 
