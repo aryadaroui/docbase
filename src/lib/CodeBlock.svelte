@@ -28,15 +28,28 @@
 		caption.tagName = 'span';
 	}
 
-	console.log('caption: ', caption);
+	// console.log('caption: ', caption);
 
 	// let html = toHtml({
 	// 	type: 'root',
 	// 	children
 	// });
+	// console.log('body: ', body);
+
+	function copy() {
+		const code_element = document.createElement('code');
+		code_element.innerHTML = body;
+		const pre_element = code_element.querySelector('pre');
+		const code_text = pre_element.innerText;
+		navigator.clipboard.writeText(code_text);
+	}
 </script>
 
 <figure id={html_id} class="code-block">
+
+	<button on:click={copy}>
+		copy
+	</button>
 
 	{@html body}
 

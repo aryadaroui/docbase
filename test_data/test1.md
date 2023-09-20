@@ -18,7 +18,7 @@ print("bar")
 this is the caption
 :::
 
-:::code{#code-test h_lines="2" h_chars="asdf" filename="test.py"}
+:::code{#code-test filename="test2.py"}
 ```python
 print("0")
 print("1")

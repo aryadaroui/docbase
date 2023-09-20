@@ -317,7 +317,7 @@ Content 2
 
 ### Blocks
 
-You can have a generic expandable block
+You can have a generic expandable block	`
 
 ```
 :::block{#ref-id}
