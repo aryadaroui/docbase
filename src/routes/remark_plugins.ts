@@ -33,6 +33,8 @@ export const prefix_counter = {
 	}
 };
 
+
+
 export const heading_counter = {
 	depths: [0, 0, 0, 0, 0, 0,],
 	increment(depth: number) {
