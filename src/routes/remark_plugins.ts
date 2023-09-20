@@ -90,6 +90,7 @@ export function enumerate_headings() {
 	};
 }
 
+
 /** Handles the ref directive
  * - sets the prefix, count, and html_id attributes based on the target key in ref_dict
  */
